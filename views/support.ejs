@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Support</title>
+    <% include ./partials/head %>
+</head>
+
+<body>
+    
+    <!-- nav bar starts here -->
+    <% include ./partials/header_signin %>
+    <!-- nav bar ends here -->
+    
+    <div class="container-fluid sign-up-bg_img">
+        
+        <div class="col-sm-12 col-md-10 col-md-offset-1">
+            <br/>
+            <h3 class="select-building-type"> <span> Customer Support  </span> </h3>
+            
+            <div class="row" style="margin:0 0 20px; padding-top:25px; padding-bottom:30px; background:#f5f5f5;">
+                
+                <div class="col-sm-12 col-md-10 col-md-offset-1">
+                    
+                    <h4><b>Our Representatives are currently unavailable on phone </b></h4>
+                    
+                    <div class="support-form-wrapper">
+                        
+                       <p style="display:inline-block"> Building No : <b>Building 123XYZ</b></p>
+                       <p style="display:inline-block"> Survey Report No : <b>Survey123XYZ</b></p>
+
+
+                        <h4 class="text-center">Please fill this form to leave a message ( <span style="border-left:  3px solid #fb6969"> </span> &nbsp; Required Fields )</h4>
+                        <br/>
+                        <form class="form-horizontal" >
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 control-label" style="text-align:center">Your Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" style="border-left:  3px solid #fb6969"  class="form-control" name="yourName" id="" placeholder="Your Name"> 
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 control-label" style="text-align:center">Your Email</label>
+                                <div class="col-sm-9">
+                                    <input type="email" style="border-left:  3px solid #fb6969"  class="form-control" name="yourEmail" id="" placeholder="Your Email"> 
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 control-label" style="text-align:center">Subject</label>
+                                <div class="col-sm-9">
+                                    <input type="text" style="border-left:  3px solid #fb6969" class="form-control" name="yourName" id="" placeholder="Subject"> 
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 control-label" style="text-align:center">Department</label>
+                                <div class="col-sm-6">
+                                    <select style="border-left:  3px solid #fb6969" class="form-control">
+                                      <option> Select</option>
+                                      <option>Customer Support</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 control-label" style="text-align:center">Message</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="3" palceholder="Enter Message"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="col-sm-3 "></div>
+                                <div class="col-sm-9">
+                                    <button id="btn" type="button" class="btn btn-danger btn-sm">Close Window
+                                        &nbsp; <i class="fa fa-times-circle"></i>
+                                    </button>
+                                    &nbsp; &nbsp; &nbsp;
+                                    <button type="button" class="btn btn-success btn-sm">Send Message
+                                        &nbsp; <i class="fa fa-angle-double-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                        </form>
+                        
+                    </div>                       
+
+                </div> <!-- col-sm-12 -->
+                
+            </div> <!-- row --->
+            
+        </div> <!-- col-sm-12 -->
+        
+    </div> <!-- container-fluid -->
+    
+    <!--- footer  -->
+         <% include ./partials/footer %>
+    <!--- footer  -->
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+   <!-- Custom Code -->
+    <script>
+        $(document).ready(function(){
+           $('[data-toggle="tooltip"]').tooltip();   
+        });
+    </script>
+
+
+    <script>
+            $(document).ready(function() {
+                $('#btn').click(function() {
+                    $.ajax({
+                        type: "GET",
+                        url: "/getPreviousOfSupport",                        
+                        success: function(result) {
+                              location.href= "/"+result;
+                            }
+
+                        });
+                    });
+                })             
+            </script>
+
+
+</body>
+
+</html>

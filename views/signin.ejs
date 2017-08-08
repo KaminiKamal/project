@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang=en>
+	<head>
+		<title>Sign In</title>
+		<% include ./partials/head %>
+	</head>
+	<style>
+		* {
+	box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.content {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 960px;
+    padding: 0 15px;
+}
+
+h1 {
+    margin: 60px 0;
+    padding: 0;
+    font-size: 50px;
+    text-align: center;
+}
+
+p {
+    margin: 0 0 30px 0;
+    font-size: 30px;
+    line-height: 1.5;
+}
+
+.fullscreen-bg {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: -100;
+}
+
+.fullscreen-bg__video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+@media (min-aspect-ratio: 16/9) {
+    .fullscreen-bg__video {
+        height: 300%;
+        top: -100%;
+    }
+}
+
+@media (max-aspect-ratio: 16/9) {
+    .fullscreen-bg__video {
+        width: 300%;
+        left: -100%;
+    }
+}
+
+@media (max-width: 767px) {
+    .fullscreen-bg {
+        background: url('../img/videoframe.jpg') center center / cover no-repeat;
+    }
+
+    .fullscreen-bg__video {
+        display: none;
+    }
+}
+	</style>
+	<body>
+	   <!-- nav bar starts here -->
+	    <% include ./partials/header_signin %>
+
+     <div class="fullscreen-bg">
+        <video  loop muted autoplay poster="img/videoframe.jpg" class="fullscreen-bg__video">
+            <source src="http://res.cloudinary.com/dcu5hz0re/video/upload/v1487256105/Modified_Animation_1_gamuip.mp4" type="video/mp4">
+        </video>
+    </div>
+
+	   <!-- nav bar ends here -->
+	    <div class="content container-fluid new-surveyor-form_bg-img" style="background:none">
+		  <!-- left-side ad div -->
+		     <!-- ad-space-bg -->
+	        
+			<div class="col-sm-6 col-sm-offset-6 col-md-4 col-md-offset-8 col-xs-12 sign-up-bg" style="height: 100% ; height: 100vh">  
+			  <!-- top-side ad div -->
+			    <div class="ad-space-top">
+			        
+				</div> <br/> <br/> <br/> <br/> <br/>
+		      <!-- form starts here 
+			   <form class="sign-up-form-bg" action="/UserLogin" method="post">-->	
+			   <form class="sign-up-form-bg" style="background: rgba(147, 176, 218, 0.9);">
+				    <h3>  Instant Sign In  </h3>
+                    <div class="form-group">
+                        <input type="email" class="form-control" name="email" id="emailid" placeholder="Email Address*">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                    </div>
+					<a id="forgot" style="text-decoration : none; cursor: pointer;"> Forgot Password ? </a>
+					
+					<!-- <button type="button" class="btn login-button">Login</button>  -->
+					<button  type="button" class="orange-btn" id="btn"><i class="fa fa-sign-in"></i>&nbsp; Login </button>
+					<br>
+					<a href="/reg" style="text-decoration : none">New user sign up now!</a>
+			    </form>
+
+			</div>  <!-- sign-up-bg -->
+	      
+		  <!-- right-side ad div -->
+			 <!--Visitor counter-->
+			 
+		  <!-- bottom-side ad div 
+			<div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+			    <div class="ad-space-bottom">
+			      <img src="./img/ad3.png" class="img-responsive ad-bottom">
+				</div>
+			</div>  -->
+		
+		</div> <!-- container-fluid -->
+
+	     <!-- footer  -->
+    <div class="container-fluid footer-partners" style="position: static;background: #fff; height: auto; padding:20px 15px 15px;">
+        <div class="row">
+
+        <div class="col-sm-3 col-xs-12">
+                <!--Visitor counter-->
+            <div class="text-center">
+                <img  src="img/step0001.png"> 
+                    <p class="text-primary" style="font-size: 15px; font-weight: bold; margin-top:12px; margin-bottom:5px;">Buildings Surveyed</p> 
+            </div>
+        </div> 
+          
+        <div class="col-sm-3 col-xs-12 text-center">
+            <img src="./img/Cortex-logo.png" style="margin-top:49px" ></a>
+                </div> 
+        
+        <div class="col-sm-3 col-xs-12 text-center">
+            <img src="./img/p3.png" style="height:80px;margin-top:35px"></a>
+                </div> 
+        
+         <div class="col-sm-3 col-xs-12">
+             <div class="text-center">
+                <img  src="img/step0002.png">
+                    <p class="text-primary" style="font-size: 15px; font-weight: bold; margin-top:12px; margin-bottom:5px;">Visitors</p>
+            </div>
+        </div> 
+
+      </div> <!-- row -->
+    </div>  <!-- container-fluid -->    
+    
+      <footer style="position: static;">
+        <i class="fa fa-twitter"></i> &nbsp;
+      <i class="fa fa-facebook-square"></i>
+        </footer>
+      <!-- footer  -->  
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	    <script src="js/bootstrap.min.js"></script>
+	   <script>
+$(document).ready(function() {
+
+
+			$('#btn').click(function () {
+
+			      var data = {
+			        email : $("#emailid").val(),
+			        password : $("#password").val()
+			      };          
+			  console.log(data);
+			    $.ajax({
+			    type:"POST",
+			    url:"/UserLogin",
+			    async : false,
+			    data :  data, 
+			    //dataType: 'json',  // multiple data sent using ajax
+			    success: function (result) {
+					        if(result == '1') {   
+					        	window.location = '/2';
+					        } else if (result == '0'){
+					        	alert('Wrong Password or User Name');
+					        };
+			    
+			    	}
+			    });
+			});
+    ///forgot password///////////////////////////////////////////////////////////////////////////////
+
+	    $('#forgot').click(function () {
+	        var data = {
+	            email : $("#emailid").val(),
+	            
+	          };  
+	        $.ajax({
+	        type:"POST",
+	        url:"/mymail",
+	        data :  data, 
+	        //dataType: 'json',  // multiple data sent using ajax
+	        success: function (result) { 
+	         if(result.complete == true){
+	         	alert("A mail has been sent to your Email ID");
+         	 } else if(result.complete == false){
+         	 	alert("Inavlid Email ID or User Doesn't Exist");
+         	 }
+
+
+	        }
+
+	    });
+	});
+});
+</script>
+	</body>
+</html>

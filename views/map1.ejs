@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang=en>
+  <head>
+    <title>Choose Assessment</title>
+     <% include ./partials/head %>
+ 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+   
+    <style>
+         /* Always set the map height explicitly to define the size of the div
+          * element that contains the map. */
+         #map {
+           height: 500px;
+           width: 100%;
+          }
+         /* Optional: Makes the sample page fill the window. */
+         html, body {
+           height: 100%;
+           margin: 0;
+           padding: 0;
+         }
+         #description {
+           font-family: Roboto;
+           font-size: 15px;
+           font-weight: 300;
+         }
+
+         #infowindow-content .title {
+           font-weight: bold;
+         }
+
+         #infowindow-content {
+           display: none;
+         }
+
+         #map #infowindow-content {
+           display: inline;
+         }
+
+         .pac-card {
+           margin: 10px 10px 0 0;
+           border-radius: 2px 0 0 2px;
+           box-sizing: border-box;
+           -moz-box-sizing: border-box;
+           outline: none;
+           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+           background-color: #fff;
+           font-family: Roboto;
+         }
+
+         #pac-container {
+           padding-bottom: 12px;
+           margin-right: 12px;
+         }
+
+         .pac-controls {
+           display: inline-block;
+           padding: 5px 11px;
+         }
+
+         .pac-controls label {
+           font-family: Roboto;
+           font-size: 13px;
+           font-weight: 300;
+         }
+
+         #address {
+           background-color: #fff;
+           font-family: Roboto;
+           font-size: 15px;
+           font-weight: 300;
+           margin-left: 12px;
+           text-overflow: ellipsis;
+           width: 330px; /* original value was 440px */
+           /* added by vikash */
+           top: 11px !important;
+           border-top-right-radius: 0;
+           border-bottom-right-radius: 0;
+         }
+
+         #address:focus {
+           border-color: #4d90fe;
+         }
+
+         #title {
+           color: #fff;
+           background-color: #4d90fe;
+           font-size: 25px;
+           font-weight: 500;
+           padding: 6px 12px;
+         }
+         #target {
+           width: 345px;
+         }
+       
+       .search-address-btn {
+          position: absolute;
+           top: 87px;
+           left: 482px;
+           z-index: 99;
+           border-top-left-radius: 0;
+           border-bottom-left-radius: 0;
+           height: 34px;
+       }
+   
+       .display-address {
+          border: 1px solid #398439;
+          background: #eee;
+          padding: 8px 12px;
+          border-radius: 3px;
+       }
+       
+       .page-label {
+           text-align:center;
+           margin-top:20px;
+       }
+       
+       .page-label span {
+           border: 4px solid #f3810f;
+           background: transparent;
+           padding: 9px 32px 11px;
+           border-radius: 20px;
+           width: initial;
+       }
+   </style>
+
+  </head>
+
+
+  <body>
+   <!-- nav bar starts here -->
+       <% include ./partials/header %>
+    <!-- nav bar ends here -->
+    <div class="container-fluid new-surveyor-form_bg-img">
+      
+        <br> 
+        
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                <h3 class="page-label">
+                    <span style="background-color: #73b6d2; border : 4px solid #73b6d2; border-radius: 20px; color: #fff;">Locate Your Building </span> 
+               </h3>
+                <br>
+
+                <input id="address" class="controls form-control" type="text" placeholder="Address Search Box" style="border-color: #398439; border-width: 2px">
+
+                <button id="submit" class="btn btn-danger search-address-btn" class="form-control" >Search</button>
+
+                <div id="map"></div> <!--map--> <br/>
+
+                <input  type="textbox"  id="txt" placeholder="Your address will be displayed here" class="form-control" readonly style="border-color: #398439;  border-width: 2px"> <br/>
+ 
+
+                <button class="orange-btn" style="width: 24%; margin-bottom:40px;" id="btn"> This is My Building !!
+                </button>
+                
+                <a class="sky-blue-btn" href="/newsurvey" style="margin-bottom:40px;"> 
+                    <i class="fa fa-angle-left"></i>&nbsp; BACK 
+                </a>
+            </d iv> <!--col-sm-10 col-sm-offset-1-->
+        
+        </div> <!--row-->
+ 
+    </div>  <!-- new-surveyor-form_bg-img -->
+ 
+
+
+ 
+
+<script>
+      // This example adds a search box to a map, using the Google Place Autocomplete
+      // feature. People can enter geographical searches. The search box will return a
+      // pick list containing a mix of places and predicted search terms.
+
+      // This example requires the Places library. Include the libraries=places
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+      var markers=[];
+      
+      function initAutocomplete() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 22.5726, lng: 88.3639},
+          zoom: 13,
+          // mapTypeId: 'roadmap'
+        });
+        
+
+        var input = document.getElementById('address');
+        var searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+        var geocoder = new google.maps.Geocoder();
+        document.getElementById('submit').addEventListener('click', function() {
+        
+        $("#txt").val("");
+        markers.forEach(function(marker) {
+            marker.setMap(null);
+          });
+
+          geocodeAddress(geocoder, map);
+        });
+        document.getElementById('address').addEventListener('keyup', function(e) {
+        
+          if (e.keyCode == 13) { 
+             //geocodeAddress(geocoder, map);
+             $("#submit").trigger("click");
+           }
+        });
+
+      }
+      function geocodeAddress(geocoder, resultsMap) {
+        var address = document.getElementById('address').value;
+        geocoder.geocode({'address': address}, function(results, status) {
+          if (status === 'OK') {
+                      resultsMap.setCenter(results[0].geometry.location);
+                      var marker = new google.maps.Marker({
+                            map: resultsMap,
+                            draggable:true, 
+                            //title:"Drag Me",
+                            animation: google.maps.Animation.DROP,
+                            position: results[0].geometry.location
+                });
+            markers.push(marker);
+                       
+          } else {
+            alert('Wrong input \n Geocode was not successful for the following reason: ' + status);
+          }
+            //console.log(marker);
+            google.maps.event.addListener(marker, 'dragend', function() { 
+            geocoder.geocode({
+              latLng: marker.getPosition()
+            }, function(responses) {  
+                     
+                    if (responses && responses.length > 0) {  
+                      var localauth = responses[0].address_components[2].long_name;
+                      markers[0].formatted_address = responses[0].formatted_address;
+
+                      $( "body" ).data( "localauth", localauth );
+                      $( "body" ).data( "lat", responses[0].geometry.location.lat() );
+                      $( "body" ).data( "lng", responses[0].geometry.location.lng() );
+
+                    } else {
+                      markers[0].formatted_address = 'Cannot determine address at this location.';
+                    }
+              
+                     $("#txt").val(markers[0].formatted_address);
+              
+                   });
+          
+            });
+
+            google.maps.event.addListener(marker, 'click', function() {
+            geocoder.geocode({
+              latLng: marker.getPosition()
+            }, function(responses) { 
+                    if (responses && responses.length > 0) {
+                      markers[0].formatted_address = responses[0].formatted_address;
+
+                    } else {
+                      markers[0].formatted_address = 'Cannot determine address at this location.';
+                    }
+                      
+                      $("#txt").val(markers[0].formatted_address);
+              
+                });
+          
+          });
+
+      })
+    }
+
+  </script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhcBj8QN9RqeG8cRNa5XscyeUnS9APgwo&libraries=places&callback=initAutocomplete"
+   async defer></script>
+  
+<script>
+$(document).ready(function() {
+    $('#btn').click(function () {  
+          var data = {
+            txtdata     :  $("#txt").val() ,
+            address     :  $("#address").val(), 
+            lat         :  $( "body" ).data( "lat"),
+            lng         :  $( "body" ).data( "lng"),
+            localauth   :  $( "body" ).data( "localauth")
+           };
+      //console.log(data);
+        $.ajax({
+        type:"POST",
+        url:"/CaptureAddress",
+        data :  data, 
+        //dataType: 'json',  // multiple data sent using ajax
+        success: function (result) { 
+               if(result =="Fail"){ 
+                 alert('Address Cannot Be Blank'); console.log(result);
+              }else{
+                 location.href="/addpicture";
+              };
+        }
+    });
+  });
+});
+</script>
+
+
+  </body>
+</html>
